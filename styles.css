@@ -1,0 +1,49 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+.root {
+    padding-top: 30px;
+}
+
+.todoWrapper {
+  width: 800px;
+  margin: 0 auto;
+  background-color: bisque;
+}
+
+.todoTitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  list-style: none;
+}
