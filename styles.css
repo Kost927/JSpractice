@@ -26,8 +26,39 @@ dd {
   margin: 0;
 }
 
+/* modal window styles */
+
+.modal {
+  pointer-events: initial;
+  z-index: 999;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.modalOverlay {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.modalComponent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  background-color: white;
+}
+
+/* main page styles */
+
 .root {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .todoWrapper {
@@ -36,14 +67,46 @@ dd {
   background-color: bisque;
 }
 
-.todoTitle {
+.app__title {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.todoList {
+.todo__title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.todo__list {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  align-items: center;
   list-style: none;
 }
+
+.todo__list-item {
+    margin-bottom: 15px;
+}
+
+.todo__input {
+  display: block;
+  width: 170px;
+  margin-right: 10px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* add task modal form */
+
+.add-task__modal-form {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
