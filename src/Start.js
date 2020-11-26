@@ -6,6 +6,6 @@ const popup = new Popup();
 
 window.addEventListener("load", () => {
   taskList.showTasks();
-  taskList.setupListeners();
-  popup.setupListeners();
+  taskList.setupSubscriber();
+  popup.setupSubscriber();
 });

@@ -3,14 +3,14 @@ class Events {
         this.events = {};
     }
 
-    subscribe(type, listener) {
+    subscribe(type, subscriber) {
         this.events[type] = this.events[type] || [];
-        this.events[type].push(listener);
+        this.events[type].push(subscriber);
 
     }
-    publish(type, arg) {
+    broadcast(type, arg) {
         if (this.events[type]) {
-            this.events[type].forEach(listener => listener(arg));
+            this.events[type].forEach(subscriber => subscriber(arg));
         }
     }
 }
