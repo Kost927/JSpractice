@@ -4,18 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css" />
-    <title>JS</title>
+    <title>JS ToDo List</title>
   </head>
   <body>
-    
-    <header>
-      <h1>To Do List</h1>
-      <input type="text" class="myInput" placeholder="Input your task here" />
-      <img class="openModal" src="./plus.png" alt="plus button" width="20px" /> <span class="addBtn" id="add_button">Add</span>
-    </header>
-    <ul class="myUL"></ul>
-    <div class="root"></div>
-    <div class="modal"></div>
-    <script src="./index.js" type="module"></script>
+    <div class="container">
+      <div class="taskListWindow">
+        <h1 class="taskListTitle">TODO List</h1>
+        <div class="inputContainer">
+          <input class="taskListInput" type="text" placeholder="Enter your task here" />
+          <button class="showModalBtn">+</button>
+        </div>
+        <ul class="taskList" id="taskList"></ul>
+      </div>
+    </div>
+    <div class="popupOverlay display-none"></div>
+    <div class="modalPopup display-none">
+      <span class="modalText">Title</span>
+      <input type="text" class="modalTitleInput modalInput" placeholder="Enter your task" autofocus />
+      <span class="modalText">Create at: </span> <input type="date" class="modalCreateInput modalInput" />
+      <p class="modal__text">Expire At</p>
+      <input type="date" class="modalExpireInput modalInput" />
+      <div class="modalFieldContainer btnContainer">
+        <button class="cancelBtn">Cancel</button> <button class="saveBtn">Save</button>
+      </div>
+    </div>
+    <script src="./src/Start.js" type="module"></script>
+    <script src="./src/index.js" type="module"></script>
+    <script src="./src/TasksList.js" type="module"></script>
+    <script src="./src/Popup.js" type="module"></script>
+    <script src="./src/Events.js" type="module"></script>
   </body>
 </html>
