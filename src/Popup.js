@@ -16,7 +16,6 @@ import {
 class Popup extends ToDo_List {
   constructor() {
     super();
-
     this.popupSelectors();
   }
 
@@ -87,14 +86,12 @@ class Popup extends ToDo_List {
     const title = this.titleInput.value;
     const createAt = this.getDate(this.createAtInput.value);
     const expireAt = this.getDate(this.expireAtInput.value);
-
     const task = {
       id: Date.now(),
       title,
       createAt,
       expireAt
     };
-
     this.setTask(task);
     this.closePopup();
     events.broadcast("showTasks");

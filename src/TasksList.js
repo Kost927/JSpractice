@@ -47,13 +47,11 @@ class TasksList extends ToDo_List {
   addNewItem(title) {
     const createAt = this.getDate(Date.now());
     const expireAt = this.getDate(Date.now(), true);
-
     const task = {
       title,
       createAt,
       expireAt
     };
-
     this.setTask(task);
     this.inputField.value = "";
     events.broadcast("showTasks");
