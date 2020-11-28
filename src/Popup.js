@@ -1,20 +1,29 @@
 import ToDo_List from "./index.js";
 import { events } from "./Events.js";
+import {
+  MODAL_POPUP__CLASS,
+  POPUP_OVERLAY__CLASS,
+  DISPLAY_NONE,
+  OVERFLOW_HIDDEN,
+  MODAL_CREATE_INPUT__CLASS,
+  MODAL_TITLE_INPUT__CLASS,
+  CANCEL_BTN__CLASS,
+  SAVE_BTN__CLASS,
+  SHOW_MODAL_BTN__CLASS,
+  MODAL_EXPIRE_INPUT__CLASS
+} from "./constants.js";
 
 class Popup extends ToDo_List {
   constructor() {
     super();
 
-    this.titleInput = document.querySelector(".modalTitleInput");
-    this.createAtInput = document.querySelector(".modalCreateInput");
-    this.expireAtInput = document.querySelector(".modalExpireInput");
-
+    this.popupSelectors();
   }
 
-  setupSubscriber() {
-    const cancelBtn = document.querySelector(".cancelBtn");
-    const saveBtn = document.querySelector(".saveBtn");
-    const showModalBtn = document.querySelector(".showModalBtn");
+  setupListeners() {
+    const cancelBtn = document.querySelector(CANCEL_BTN__CLASS);
+    const saveBtn = document.querySelector(SAVE_BTN__CLASS);
+    const showModalBtn = document.querySelector(SHOW_MODAL_BTN__CLASS);
 
     showModalBtn.addEventListener("click", () => this.showPopupToAdd());
     cancelBtn.addEventListener("click", () => this.closePopup());
@@ -23,39 +32,55 @@ class Popup extends ToDo_List {
     this.expireAtInput.addEventListener("change", () => this.expireAtInput);
   }
 
-  showPopupToAdd() {
+  popupSelectors() {
+    this.titleInput = document.querySelector(MODAL_TITLE_INPUT__CLASS);
+    this.createAtInput = document.querySelector(MODAL_CREATE_INPUT__CLASS);
+    this.expireAtInput = document.querySelector(MODAL_EXPIRE_INPUT__CLASS);
+  }
+
+  getDateFormat(date) {
+    return date
+      .split("-")
+      .reverse()
+      .join("-");
+  }
+
+  showPopupToAdd(task) {
     if (this.inputField.value) {
       this.titleInput.value = this.inputField.value;
     }
 
-
     this.togglePopup();
-    let currentDate = new Date();
     this.titleInput.focus();
-    (this.createAtInput.value = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`),
-      (this.expireAtInput.value = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate() + 1}`);
+    this.createAtInput.value = this.getDateFormat(this.getDate(Date.now()));
+    this.expireAtInput.value = this.getDateFormat(this.getDate(Date.now(), true));
   }
 
   closePopup() {
     this.togglePopup();
     this.clearFields();
+  }
 
+  togglePopupArray(array) {
+    array.map(object => object.element.classList.toggle(object.className));
   }
 
   togglePopup() {
-    const modalPopup = document.querySelector(".modalPopup");
-    const popupOverlay = document.querySelector(".popupOverlay");
+    const modalPopup = document.querySelector(MODAL_POPUP__CLASS);
+    const popupOverlay = document.querySelector(POPUP_OVERLAY__CLASS);
 
-    document.body.classList.toggle("overflow-hidden");
-    popupOverlay.classList.toggle("display-none");
-    modalPopup.classList.toggle("display-none");
+    this.togglePopupArray([
+      { element: modalPopup, className: DISPLAY_NONE },
+      { element: popupOverlay, className: DISPLAY_NONE },
+      { element: document.body, className: OVERFLOW_HIDDEN }
+    ]);
+
     this.isShowPopup = !this.isShowPopup;
   }
 
   clearFields() {
     this.titleInput.value = "";
     this.inputField.value = "";
-
   }
 
   saveTask() {
@@ -63,13 +88,11 @@ class Popup extends ToDo_List {
     const createAt = this.getDate(this.createAtInput.value);
     const expireAt = this.getDate(this.expireAtInput.value);
 
-    const id = Date.now();
-
     const task = {
-      id,
-      title: title,
-      createAt: createAt,
-      expireAt: expireAt
+      id: Date.now(),
+      title,
+      createAt,
+      expireAt
     };
 
     this.setTask(task);

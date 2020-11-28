@@ -1,16 +1,15 @@
 class SavedData {
-    constructor() {
-        this.tasks = [];
-    }
+  constructor() {
+    this.tasks = [];
+  }
 
-    getTasks() {
-        return this.tasks;
-    }
+  getTasks() {
+    return this.tasks;
+  }
 
-    setTasks(tasks) {
-        this.tasks = tasks;
-    }
-
+  setTasks(tasks) {
+    this.tasks = tasks;
+  }
 }
 
 export const savedData = new SavedData();

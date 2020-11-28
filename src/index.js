@@ -1,12 +1,14 @@
-import { savedData } from "./SavedData.js"
-
+import { savedData } from "./SavedData.js";
 
 class ToDo_List {
+  isShowPopup = false;
   constructor() {
-    this.isShowPopup = false;
-    this.inputField = document.querySelector(".taskListInput");
+    this.toDoListSelectors();
   }
 
+  toDoListSelectors() {
+    this.inputField = document.querySelector(".taskListInput");
+  }
 
   setTask(data) {
     const allTasks = savedData.getTasks();
@@ -15,31 +17,34 @@ class ToDo_List {
     savedData.setTasks(tasks);
   }
 
-  getTaskFormat(data) {
+  getTaskFormat({ id, title, createAt, expireAt } = data) {
     const task = {
-      id: data.id || Date.now(),
+      id: id || Date.now(),
       settled: false,
-      title: data.title,
-      createDate: data.createAt,
-      expireDate: data.expireAt
+      title,
+      createDate: createAt,
+      expireDate: expireAt
     };
 
     return task;
   }
 
   getDate(createAtDate, expireAtDate = false) {
+    let dateNumber = 10;
+    let oneDay = 1;
+
     const date = new Date(createAtDate);
-    let day = expireAtDate ? date.getDate() + 1 : date.getDate();
-    let month = date.getMonth() + 1;
+    let day = expireAtDate ? date.getDate() + oneDay : date.getDate();
+    let month = date.getMonth() + oneDay;
     let year = date.getFullYear();
 
-    if (day < 10) {
+    if (day < dateNumber) {
       day = "0" + day;
     }
-    if (month < 10) {
+    if (month < dateNumber) {
       month = "0" + month;
     }
-    if (year < 10) {
+    if (year < dateNumber) {
       year = "0" + year;
     }
     return `${day}-${month}-${year}`;

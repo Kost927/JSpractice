@@ -72,6 +72,20 @@ dd {
   justify-content: space-around;
 }
 
+/* ======= List styles ======  */
+.taskListItem {
+  display: flex;
+}
+
+.itemTitle {
+  font-size: 25px;
+}
+
+.itemDelete::before {
+content: "\2716";
+font-size: 30px;
+cursor: pointer;
+}
 
 /* ===== dynamic styles ====== */
 
