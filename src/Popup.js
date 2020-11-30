@@ -10,7 +10,8 @@ import {
   CANCEL_BTN__CLASS,
   SAVE_BTN__CLASS,
   SHOW_MODAL_BTN__CLASS,
-  MODAL_EXPIRE_INPUT__CLASS
+  MODAL_EXPIRE_INPUT__CLASS,
+  SHOW_TASKS
 } from "./constants.js";
 
 class Popup extends ToDo_List {
@@ -44,9 +45,11 @@ class Popup extends ToDo_List {
       .join("-");
   }
 
-  showPopupToAdd(task) {
-    if (this.inputField.value) {
-      this.titleInput.value = this.inputField.value;
+  showPopupToAdd() {
+    const { value } = this.inputField;
+
+    if (value) {
+      this.titleInput.value = value;
     }
 
     this.togglePopup();
@@ -94,7 +97,7 @@ class Popup extends ToDo_List {
     };
     this.setTask(task);
     this.closePopup();
-    events.broadcast("showTasks");
+    events.broadcast(SHOW_TASKS);
   }
 }
 

@@ -1,18 +1,23 @@
 import ToDo_List from "./index.js";
 import { events } from "./Events.js";
 import { savedData } from "./SavedData.js";
+import {
+  SHOW_TASKS,
+  DELETE_TASK,
+  TASK_LIST_ITEM_CLASS,
+  ITEM_CLASS,
+  ITEM_CHECKBOX_CLASS,
+  ITEM_CONTENT_CLASS,
+  ITEM_TITLE_CLASS,
+  ITEM_DELETE_CLASS,
+  ITEM_SETTLED_CLASS,
+  ITEM_CONTENT_SETTLED_CLASS
+} from "./constants.js";
 
 class TasksList extends ToDo_List {
-  constructor(item, label, content, title, createDate, expireDate, checkbox, deleteButton) {
+  constructor(deleteButton, checkbox, expireDate, createDate, title, content, label, item) {
     super();
-    this.deleteButton = deleteButton;
-    this.checkbox = checkbox;
-    this.expireDate = expireDate;
-    this.createDate = createDate;
-    this.title = title;
-    this.content = content;
-    this.label = label;
-    this.item = item;
+    Object.assign(this, { deleteButton, checkbox, expireDate, createDate, title, content, label, item });
     this.taskListSelectors();
     this.taskListSubscribers();
   }
@@ -32,29 +37,27 @@ class TasksList extends ToDo_List {
   }
 
   taskListSubscribers() {
-    events.subscribe("showTasks", tasks => this.showTasks(tasks));
-    events.subscribe("deleteTask", id => this.deleteTask(id));
+    events.subscribe(SHOW_TASKS, tasks => this.showTasks(tasks));
+    events.subscribe(DELETE_TASK, id => this.deleteTask(id));
   }
 
   handleItemClick(target) {
-    if (target.classList.contains("itemDelete")) {
+    if (target.classList.contains(ITEM_DELETE_CLASS)) {
       this.deleteTask(target);
-    } else if (target.classList.contains("itemCheckbox")) {
+    } else if (target.classList.contains(ITEM_CHECKBOX_CLASS)) {
       this.markTask(target);
     }
   }
 
   addNewItem(title) {
-    const createAt = this.getDate(Date.now());
-    const expireAt = this.getDate(Date.now(), true);
     const task = {
       title,
-      createAt,
-      expireAt
+      createAt: this.getDate(Date.now()),
+      expireAt: this.getDate(Date.now(), true)
     };
     this.setTask(task);
     this.inputField.value = "";
-    events.broadcast("showTasks");
+    events.broadcast(SHOW_TASKS);
   }
 
   markTask({ id, checked }) {
@@ -62,16 +65,18 @@ class TasksList extends ToDo_List {
     const newTasks = tasks.map(task => (task.id === Number(id) ? { ...task, settled: checked } : task));
 
     savedData.setTasks(newTasks);
-    events.broadcast("showTasks");
+    events.broadcast(SHOW_TASKS);
   }
 
-  deleteTask(target) {
-    const id = target.parentElement.firstChild.id;
-    const tasks = savedData.getTasks();
-    const newTasks = tasks.filter(item => item.id !== Number(id));
+  deleteTask({
+    parentElement: {
+      firstChild: { id: deletedTaskId }
+    }
+  }) {
+    const filteredTasks = savedData.getTasks().filter(({ id }) => id !== +deletedTaskId);
 
-    savedData.setTasks(newTasks);
-    events.broadcast("showTasks");
+    savedData.setTasks(filteredTasks);
+    events.broadcast(SHOW_TASKS);
   }
 
   showTasks(tasks = savedData.getTasks()) {
@@ -105,29 +110,29 @@ class TasksList extends ToDo_List {
   }
 
   setClassNames(task) {
-    this.item.classList.add("taskListItem", "item");
-    this.checkbox.classList.add("itemCheckbox");
-    this.content.classList.add("itemContent");
-    this.title.classList.add("itemTitle");
-    this.deleteButton.classList.add("itemDelete");
+    this.item.classList.add(TASK_LIST_ITEM_CLASS, ITEM_CLASS);
+    this.checkbox.classList.add(ITEM_CHECKBOX_CLASS);
+    this.content.classList.add(ITEM_CONTENT_CLASS);
+    this.title.classList.add(ITEM_TITLE_CLASS);
+    this.deleteButton.classList.add(ITEM_DELETE_CLASS);
 
     if (task.settled) {
-      this.item.classList.add("itemSettled");
-      this.content.classList.add("itemContentSettled");
+      this.item.classList.add(ITEM_SETTLED_CLASS);
+      this.content.classList.add(ITEM_CONTENT_SETTLED_CLASS);
     }
   }
 
-  setAttributes(task) {
-    this.label.setAttribute("for", task.id);
+  setAttributes({ id, settled }) {
+    this.label.setAttribute("for", id);
     this.checkbox.type = "checkbox";
-    this.checkbox.id = task.id;
-    this.checkbox.checked = task.settled;
+    this.checkbox.id = id;
+    this.checkbox.checked = settled;
   }
 
-  setValues(task) {
-    this.title.innerHTML = task.title;
-    this.createDate.innerHTML = `${task.createDate} / `;
-    this.expireDate.innerHTML = task.expireDate;
+  setValues({ title, createDate, expireDate }) {
+    this.title.innerHTML = title;
+    this.createDate.innerHTML = `${createDate} / `;
+    this.expireDate.innerHTML = expireDate;
   }
 }
 
