@@ -10,14 +10,17 @@ import {
   CANCEL_BTN__CLASS,
   SAVE_BTN__CLASS,
   SHOW_MODAL_BTN__CLASS,
-  MODAL_EXPIRE_INPUT__CLASS
+  MODAL_EXPIRE_INPUT__CLASS,
+  SHOW_TASKS,
+  DELETE_TASK
 } from "./constants.js";
 
 class Popup extends ToDo_List {
+  taskForEdit = {}
   constructor() {
     super();
-
     this.popupSelectors();
+    this.popupSubscribers();
   }
 
   setupListeners() {
@@ -29,6 +32,7 @@ class Popup extends ToDo_List {
     cancelBtn.addEventListener("click", () => this.closePopup());
     saveBtn.addEventListener("click", () => this.saveTask());
     this.titleInput.addEventListener("change", () => this.titleInput);
+    this.createAtInput.addEventListener("change", () => this.createAtInput);
     this.expireAtInput.addEventListener("change", () => this.expireAtInput);
   }
 
@@ -38,6 +42,11 @@ class Popup extends ToDo_List {
     this.expireAtInput = document.querySelector(MODAL_EXPIRE_INPUT__CLASS);
   }
 
+  popupSubscribers() {
+    events.subscribe('editTask', task => this.showPopupToEdit(this.taskForEdit = task));
+
+  }
+
   getDateFormat(date) {
     return date
       .split("-")
@@ -45,15 +54,28 @@ class Popup extends ToDo_List {
       .join("-");
   }
 
-  showPopupToAdd(task) {
-    if (this.inputField.value) {
-      this.titleInput.value = this.inputField.value;
+  showPopupToAdd() {
+    const { value } = this.inputField;
+
+    if (value) {
+      this.titleInput.value = value;
     }
 
     this.togglePopup();
     this.titleInput.focus();
     this.createAtInput.value = this.getDateFormat(this.getDate(Date.now()));
     this.expireAtInput.value = this.getDateFormat(this.getDate(Date.now(), true));
+  }
+
+  showPopupToEdit(task) {
+    this.togglePopup();
+    this.setTaskToEdit(task);
+  }
+
+  setTaskToEdit({ title, createDate, expireDate }) {
+    this.titleInput.value = title;
+    this.createAtInput.value = this.getDateFormat(createDate);
+    this.expireAtInput.value = this.getDateFormat(expireDate);
   }
 
   closePopup() {
@@ -87,7 +109,7 @@ class Popup extends ToDo_List {
     const title = this.titleInput.value;
     const createAt = this.getDate(this.createAtInput.value);
     const expireAt = this.getDate(this.expireAtInput.value);
-
+    const id = this.taskForEdit.id;
     const task = {
       id: Date.now(),
       title,
@@ -95,9 +117,11 @@ class Popup extends ToDo_List {
       expireAt
     };
 
+    id && events.broadcast(DELETE_TASK, id);
+
     this.setTask(task);
     this.closePopup();
-    events.broadcast("showTasks");
+    events.broadcast(SHOW_TASKS);
   }
 }
 

@@ -87,6 +87,12 @@ font-size: 30px;
 cursor: pointer;
 }
 
+.itemEdit::before {
+content: "\270E";
+font-size: 29px;
+cursor: pointer;
+}
+
 /* ===== dynamic styles ====== */
 
 .display-none {

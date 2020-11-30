@@ -14,6 +14,7 @@ class ToDo_List {
     const allTasks = savedData.getTasks();
     const newTask = this.getTaskFormat(data);
     const tasks = [...allTasks, newTask];
+
     savedData.setTasks(tasks);
   }
 
@@ -30,10 +31,9 @@ class ToDo_List {
   }
 
   getDate(createAtDate, expireAtDate = false) {
+    const date = new Date(createAtDate);
     let dateNumber = 10;
     let oneDay = 1;
-
-    const date = new Date(createAtDate);
     let day = expireAtDate ? date.getDate() + oneDay : date.getDate();
     let month = date.getMonth() + oneDay;
     let year = date.getFullYear();
