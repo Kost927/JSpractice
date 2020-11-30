@@ -14,8 +14,11 @@ export const ITEM_TITLE_CLASS = "itemTitle";
 export const ITEM_DELETE_CLASS = "itemDelete";
 export const ITEM_SETTLED_CLASS = "itemSettled";
 export const ITEM_CONTENT_SETTLED_CLASS = "itemContentSettled";
+export const ITEM_EDIT_CLASS = "itemEdit";
+export const TASK_LIST_CLASS = ".taskList";
 
 export const OVERFLOW_HIDDEN = "overflow-hidden";
 export const DISPLAY_NONE = "display-none";
 export const SHOW_TASKS = "showTasks";
 export const DELETE_TASK = "deleteTask";
+export const EDIT_TASK = "editTask";

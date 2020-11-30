@@ -4,6 +4,7 @@ import { savedData } from "./SavedData.js";
 import {
   SHOW_TASKS,
   DELETE_TASK,
+  EDIT_TASK,
   TASK_LIST_ITEM_CLASS,
   ITEM_CLASS,
   ITEM_CHECKBOX_CLASS,
@@ -11,13 +12,15 @@ import {
   ITEM_TITLE_CLASS,
   ITEM_DELETE_CLASS,
   ITEM_SETTLED_CLASS,
-  ITEM_CONTENT_SETTLED_CLASS
+  ITEM_CONTENT_SETTLED_CLASS,
+  ITEM_EDIT_CLASS,
+  TASK_LIST_CLASS
 } from "./constants.js";
 
 class TasksList extends ToDo_List {
-  constructor(deleteButton, checkbox, expireDate, createDate, title, content, label, item) {
+  constructor(deleteButton, checkbox, expireDate, createDate, title, content, label, item, editItem) {
     super();
-    Object.assign(this, { deleteButton, checkbox, expireDate, createDate, title, content, label, item });
+    Object.assign(this, { deleteButton, checkbox, expireDate, createDate, title, content, label, item, editItem });
     this.taskListSelectors();
     this.taskListSubscribers();
   }
@@ -33,7 +36,7 @@ class TasksList extends ToDo_List {
   }
 
   taskListSelectors() {
-    this.list = document.querySelector(".taskList");
+    this.list = document.querySelector(TASK_LIST_CLASS);
   }
 
   taskListSubscribers() {
@@ -46,6 +49,8 @@ class TasksList extends ToDo_List {
       this.deleteTask(target);
     } else if (target.classList.contains(ITEM_CHECKBOX_CLASS)) {
       this.markTask(target);
+    } else if (target.classList.contains(ITEM_EDIT_CLASS)) {
+      this.editTask(target);
     }
   }
 
@@ -62,21 +67,24 @@ class TasksList extends ToDo_List {
 
   markTask({ id, checked }) {
     const tasks = savedData.getTasks();
-    const newTasks = tasks.map(task => (task.id === Number(id) ? { ...task, settled: checked } : task));
+    const newTasks = tasks.map(task => (task.id === +id ? { ...task, settled: checked } : task));
 
     savedData.setTasks(newTasks);
     events.broadcast(SHOW_TASKS);
   }
 
-  deleteTask({
-    parentElement: {
-      firstChild: { id: deletedTaskId }
-    }
-  }) {
-    const filteredTasks = savedData.getTasks().filter(({ id }) => id !== +deletedTaskId);
+  deleteTask(target) {
+    const deletedTaskId = typeof target === 'number' ? target : target.parentElement.firstChild.id;
+    const filteredToDeleteTasks = savedData.getTasks().filter(task => task.id !== +deletedTaskId);
 
-    savedData.setTasks(filteredTasks);
+    savedData.setTasks(filteredToDeleteTasks);
     events.broadcast(SHOW_TASKS);
+  }
+
+  editTask({ parentElement: { firstChild: { id: editedTaskId } } }) {
+    const filteredToEditTask = savedData.getTasks().find(task => task.id === +editedTaskId);
+
+    events.broadcast(EDIT_TASK, filteredToEditTask);
   }
 
   showTasks(tasks = savedData.getTasks()) {
@@ -92,7 +100,7 @@ class TasksList extends ToDo_List {
         this.content.appendChild(this.title);
 
         this.content.append(this.createDate, this.expireDate);
-        this.item.append(this.checkbox, this.label, this.content, this.deleteButton);
+        this.item.append(this.checkbox, this.label, this.content, this.editItem, this.deleteButton);
         this.list.appendChild(this.item);
       });
     }
@@ -107,6 +115,7 @@ class TasksList extends ToDo_List {
     this.createDate = document.createElement("span");
     this.expireDate = document.createElement("span");
     this.deleteButton = document.createElement("span");
+    this.editItem = document.createElement("span");
   }
 
   setClassNames(task) {
@@ -115,6 +124,7 @@ class TasksList extends ToDo_List {
     this.content.classList.add(ITEM_CONTENT_CLASS);
     this.title.classList.add(ITEM_TITLE_CLASS);
     this.deleteButton.classList.add(ITEM_DELETE_CLASS);
+    this.editItem.classList.add(ITEM_EDIT_CLASS);
 
     if (task.settled) {
       this.item.classList.add(ITEM_SETTLED_CLASS);
