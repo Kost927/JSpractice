@@ -16,9 +16,15 @@ export const ITEM_SETTLED_CLASS = "itemSettled";
 export const ITEM_CONTENT_SETTLED_CLASS = "itemContentSettled";
 export const ITEM_EDIT_CLASS = "itemEdit";
 export const TASK_LIST_CLASS = ".taskList";
+export const FILTER_BTN_ITEM_CLASS = ".filterBtnItem";
+export const FILTER_BTN_ACTIVE_CLASS = "filterBtnActive";
+
 
 export const OVERFLOW_HIDDEN = "overflow-hidden";
 export const DISPLAY_NONE = "display-none";
 export const SHOW_TASKS = "showTasks";
 export const DELETE_TASK = "deleteTask";
 export const EDIT_TASK = "editTask";
+export const FILTERED_ITEM__ALL = "all";
+export const FILTERED_ITEM__COMPLETED = "completed";
+export const FILTERED_ITEM__ACTIVE = "active";

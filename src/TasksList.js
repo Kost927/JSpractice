@@ -75,19 +75,19 @@ class TasksList extends ToDo_List {
 
   deleteTask(target) {
     const deletedTaskId = typeof target === 'number' ? target : target.parentElement.firstChild.id;
-    const filteredToDeleteTasks = savedData.getTasks().filter(task => task.id !== +deletedTaskId);
+    const filteredToDeleteTasks = savedData.getFilteredTasks().filter(task => task.id !== +deletedTaskId);
 
     savedData.setTasks(filteredToDeleteTasks);
     events.broadcast(SHOW_TASKS);
   }
 
   editTask({ parentElement: { firstChild: { id: editedTaskId } } }) {
-    const filteredToEditTask = savedData.getTasks().find(task => task.id === +editedTaskId);
+    const filteredToEditTask = savedData.getFilteredTasks().find(task => task.id === +editedTaskId);
 
     events.broadcast(EDIT_TASK, filteredToEditTask);
   }
 
-  showTasks(tasks = savedData.getTasks()) {
+  showTasks(tasks = savedData.getFilteredTasks()) {
     if (tasks) {
       this.list.innerHTML = "";
 

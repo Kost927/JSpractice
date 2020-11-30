@@ -15,13 +15,21 @@
         </div>
         <ul class="taskList"></ul>
       </div>
+          <div class="filterWrapper">
+            <ul class="filterButtonsList">
+              <li class="filterBtnItem filterBtnActive filterAll">all</li>
+              <li class="filterBtnItem filterActive">active</li>
+              <li class="filterBtnItem filterCompleted">completed</li>
+              <li class="filterBtnItem clearCompleted">clear completed</li>
+            </ul>
+          </div>
     </div>
     <div class="popupOverlay display-none"></div>
     <div class="modalPopup display-none">
       <span class="modalText">Title</span>
       <input type="text" class="modalTitleInput modalInput" placeholder="Enter your task" autofocus />
       <span class="modalText">Create at: </span> <input type="date" class="modalCreateInput modalInput" />
-      <p class="modal__text">Expire At</p>
+      <p class="modalText">Expire At</p>
       <input type="date" class="modalExpireInput modalInput" />
       <div class="modalFieldContainer btnContainer">
         <button class="cancelBtn">Cancel</button> <button class="saveBtn">Save</button>
@@ -32,5 +40,6 @@
     <script src="./src/TasksList.js" type="module"></script>
     <script src="./src/Popup.js" type="module"></script>
     <script src="./src/Events.js" type="module"></script>
+    <script src="./src/FilterTasks.js" type="module"></script>
   </body>
 </html>

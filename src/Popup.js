@@ -16,7 +16,7 @@ import {
 } from "./constants.js";
 
 class Popup extends ToDo_List {
-  taskForEdit = {}
+  taskForEdit = {};
   constructor() {
     super();
     this.popupSelectors();
@@ -43,8 +43,7 @@ class Popup extends ToDo_List {
   }
 
   popupSubscribers() {
-    events.subscribe('editTask', task => this.showPopupToEdit(this.taskForEdit = task));
-
+    events.subscribe("editTask", task => this.showPopupToEdit((this.taskForEdit = task)));
   }
 
   getDateFormat(date) {

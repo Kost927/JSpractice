@@ -93,6 +93,19 @@ font-size: 29px;
 cursor: pointer;
 }
 
+
+/* ============ filter buttons =============== */
+
+.filterButtonsList {
+  display: flex;
+  list-style: none;
+}
+
+.filterBtnItem {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 /* ===== dynamic styles ====== */
 
 .display-none {

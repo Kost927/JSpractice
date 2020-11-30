@@ -11,7 +11,7 @@ class ToDo_List {
   }
 
   setTask(data) {
-    const allTasks = savedData.getTasks();
+    const allTasks = savedData.getFilteredTasks();
     const newTask = this.getTaskFormat(data);
     const tasks = [...allTasks, newTask];
 
