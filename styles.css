@@ -26,8 +26,23 @@ dd {
   margin: 0;
 }
 
-/* popup styles */
+/* =========== main styles =========== */
 
+.inputContainer {
+  display: flex;
+}
+
+.taskListInput {
+  width: 500px;
+  height: 40px;
+}
+
+.showModalBtn {
+  width: 40px;
+  height: 40px;
+}
+
+/* popup styles */
 
 .popupOverlay {
   position: fixed;
@@ -36,7 +51,7 @@ dd {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .modalPopup {
@@ -82,17 +97,16 @@ dd {
 }
 
 .itemDelete::before {
-content: "\2716";
-font-size: 30px;
-cursor: pointer;
+  content: "\2716";
+  font-size: 30px;
+  cursor: pointer;
 }
 
 .itemEdit::before {
-content: "\270E";
-font-size: 29px;
-cursor: pointer;
+  content: "\270E";
+  font-size: 29px;
+  cursor: pointer;
 }
-
 
 /* ============ filter buttons =============== */
 
@@ -104,6 +118,35 @@ cursor: pointer;
 .filterBtnItem {
   margin-right: 10px;
   cursor: pointer;
+}
+
+/* =========== sort ============== */
+.sortButton::before {
+  content: "\21c6";
+  font-size: 29px;
+  cursor: pointer;
+}
+
+.sortButtonsList {
+  /* position: absolute; */
+  display: flex;
+  list-style: none;
+}
+
+.sortButtons {
+  margin-right: 10px;
+}
+
+.sortBtnByDate {
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.sortBtnByText {
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 0 10px;
 }
 
 /* ===== dynamic styles ====== */
@@ -123,5 +166,3 @@ cursor: pointer;
 .itemContentSettled p {
   text-decoration: line-through;
 }
-
-

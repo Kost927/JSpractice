@@ -67,6 +67,7 @@ class TasksList extends ToDo_List {
 
   markTask({ id, checked }) {
     const tasks = savedData.getTasks();
+    console.log(tasks)
     const newTasks = tasks.map(task => (task.id === +id ? { ...task, settled: checked } : task));
 
     savedData.setTasks(newTasks);
